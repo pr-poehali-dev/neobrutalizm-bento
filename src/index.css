@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 217 33% 17%;
 
-    /* Orange accent - primary brand color */
+    /* Brutal orange - primary brand color */
     --primary: 15 100% 60%;
     --primary-foreground: 0 0% 100%;
 
@@ -121,6 +121,89 @@
       system-ui,
       -apple-system,
       sans-serif;
-    font-weight: 700;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  /* Brutalist custom styles */
+  .brutalist-shadow {
+    box-shadow: 8px 8px 0px #2d3142;
+  }
+
+  .brutalist-shadow-orange {
+    box-shadow: 6px 6px 0px #ff6b35;
+  }
+
+  .brutalist-border {
+    border: 4px solid #2d3142;
+  }
+
+  .ripped-edge {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 85%,
+      95% 100%,
+      85% 95%,
+      70% 100%,
+      0 100%
+    );
+  }
+
+  .ripped-edge-top {
+    clip-path: polygon(
+      0 15%,
+      15% 0,
+      30% 5%,
+      45% 0,
+      60% 8%,
+      75% 0,
+      90% 5%,
+      100% 0,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .skewed-section {
+    transform: skewY(-2deg);
+  }
+
+  .skewed-content {
+    transform: skewY(2deg);
+  }
+
+  .noise-bg {
+    background-image:
+      radial-gradient(circle at 25% 25%, #bfc0c0 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, #bfc0c0 2px, transparent 2px);
+    background-size: 50px 50px;
+    background-position:
+      0 0,
+      25px 25px;
+  }
+
+  .glitch-text {
+    position: relative;
+  }
+
+  .glitch-text::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 2px;
+    color: #ff6b35;
+    z-index: -1;
+    clip: rect(0, 900px, 0, 0);
+  }
+
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: -2px;
+    color: #2d3142;
+    z-index: -2;
+    clip: rect(0, 900px, 0, 0);
   }
 }
