@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 
 export default function Index() {
@@ -13,6 +14,11 @@ export default function Index() {
     email: '',
     message: ''
   });
+
+  const [calculatorOpen, setCalculatorOpen] = useState(false);
+  const [partnerOpen, setPartnerOpen] = useState(false);
+  const [serviceOpen, setServiceOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<any>(null);
 
   const cities = [
     'Астрахань', 'Барнаул', 'Белгород', 'Вологда', 'Воронеж', 'Курск', 
@@ -25,37 +31,49 @@ export default function Index() {
       title: 'ОТВЕТСТВЕННОЕ\nХРАНЕНИЕ',
       description: 'WMS-системы, контроль качества. Оплата только за занимаемое место.',
       icon: 'Warehouse',
-      size: 'large'
+      size: 'large',
+      fullDescription: 'Профессиональное складское хранение товаров с использованием современных WMS-систем. Полный контроль качества, температурные режимы, система безопасности 24/7. Оплата только за фактически занимаемые площади.',
+      features: ['WMS-система учета', 'Контроль температуры', 'Видеонаблюдение', 'Страхование товаров', 'Отчетность в режиме реального времени']
     },
     {
       title: 'ФУЛФИЛМЕНТ',
       description: 'Упаковка, маркировка, доставка до складов маркетплейсов.',
       icon: 'Package',
-      size: 'medium'
+      size: 'medium',
+      fullDescription: 'Комплексные услуги фулфилмента для интернет-магазинов и маркетплейсов. От приемки товара до доставки конечному покупателю.',
+      features: ['Упаковка по стандартам маркетплейсов', 'Маркировка и этикетирование', 'Интеграция с маркетплейсами', 'Обработка возвратов', 'Кросс-докинг']
     },
     {
       title: 'СОРТИРОВКА',
       description: 'Высокая скорость и точность.',
       icon: 'GitBranch',
-      size: 'small'
+      size: 'small',
+      fullDescription: 'Профессиональная сортировка товаров по различным параметрам с использованием автоматизированных систем.',
+      features: ['Автоматизированная сортировка', 'Сортировка по размерам', 'Категоризация товаров', 'Контроль качества', 'Быстрая обработка']
     },
     {
       title: 'ТРАНСПОРТНАЯ\nЛОГИСТИКА',
       description: 'Доставка от двери до двери с надежными партнерами.',
       icon: 'Truck',
-      size: 'large'
+      size: 'large',
+      fullDescription: 'Полный цикл транспортной логистики с контролем на каждом этапе. Работаем с проверенными транспортными компаниями.',
+      features: ['Доставка по всей России', 'Отслеживание грузов', 'Страхование при перевозке', 'Экспресс-доставка', 'Сборные грузы']
     },
     {
       title: 'ИТ-УСЛУГИ',
       description: 'WMS, интеграция с 1С, личный кабинет.',
       icon: 'Monitor',
-      size: 'medium'
+      size: 'medium',
+      fullDescription: 'Современные ИТ-решения для управления логистическими процессами и интеграции с учетными системами клиента.',
+      features: ['WMS-система', 'Интеграция с 1С', 'Личный кабинет клиента', 'API для интеграций', 'Аналитика и отчеты']
     },
     {
       title: 'АУТСОРСИНГ\nПЕРСОНАЛА',
       description: 'Гибкое решение для пиковых нагрузок.',
       icon: 'Users',
-      size: 'small'
+      size: 'small',
+      fullDescription: 'Предоставляем квалифицированный персонал для складских операций. Гибкие условия сотрудничества.',
+      features: ['Обученный персонал', 'Гибкий график работы', 'Масштабирование под нагрузку', 'Контроль качества работы', 'Замещение персонала']
     }
   ];
 
@@ -66,9 +84,21 @@ export default function Index() {
     { value: '100%', label: 'НАДЕЖНОСТЬ', position: 'bottom-right' }
   ];
 
+  const partners = [
+    { name: 'ЯНДЕКС.МАРКЕТ', description: 'Официальный партнер', logo: '🛒' },
+    { name: 'WILDBERRIES', description: 'Сертифицированный поставщик', logo: '🛍️' },
+    { name: 'OZON', description: 'Партнер по фулфилменту', logo: '📦' },
+    { name: '1С', description: 'Интеграционный партнер', logo: '💼' }
+  ];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+  };
+
+  const handleServiceClick = (service: any) => {
+    setSelectedService(service);
+    setServiceOpen(true);
   };
 
   return (
@@ -91,21 +121,26 @@ export default function Index() {
           {/* Left side - Typography experiment */}
           <div className="lg:col-span-8 space-y-8">
             <div className="space-y-4">
-              <div className="text-sm font-black text-primary tracking-[0.3em] mb-4">
-                ООО ЛОГИСТИКА СЕРВИС
+              {/* Более заметный заголовок компании */}
+              <div className="bg-primary p-6 brutalist-shadow-orange mb-8 transform -rotate-1">
+                <div className="text-2xl md:text-3xl font-black text-white tracking-[0.2em]">
+                  ООО ЛОГИСТИКА СЕРВИС
+                </div>
+                <div className="text-lg font-bold text-white/80 mt-2">
+                  3PL ОПЕРАТОР
+                </div>
               </div>
               
               <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-white leading-[0.8] tracking-tighter">
-                <span className="block">ВАША</span>
-                <span className="block text-primary ml-8 md:ml-16">ЛОГИСТИКА</span>
-                <span className="block text-sm md:text-base font-normal opacity-60 ml-4 tracking-normal mt-2">
-                  наша ответственность
-                </span>
+                <span className="block">СОРТИРОВКА</span>
+                <span className="block text-primary ml-8 md:ml-16">&</span>
+                <span className="block ml-4 md:ml-8">ХРАНЕНИЕ</span>
               </h1>
             </div>
             
             <div className="flex flex-wrap gap-4 items-center">
               <Button 
+                onClick={() => setCalculatorOpen(true)}
                 size="lg" 
                 className="bg-primary hover:bg-primary/90 text-white font-black px-12 py-8 text-xl brutalist-shadow-orange hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200 rounded-none"
               >
@@ -113,16 +148,13 @@ export default function Index() {
                 <div className="ml-3 w-3 h-3 bg-white"></div>
               </Button>
               
-              <div className="text-white/60 text-lg font-mono rotate-2">
-                3PL ОПЕРАТОР
-              </div>
-              
               <Button 
+                onClick={() => setPartnerOpen(true)}
                 variant="outline" 
                 size="lg" 
                 className="border-4 border-white text-white hover:bg-white hover:text-secondary font-black px-8 py-6 text-lg rounded-none brutalist-border"
               >
-                ПАРТНЁРСТВО
+                СТАТЬ ПАРТНЕРОМ
               </Button>
             </div>
           </div>
@@ -163,8 +195,11 @@ export default function Index() {
           
           {/* Experimental Bento Grid */}
           <div className="grid grid-cols-12 grid-rows-6 gap-4 h-[800px] md:h-[600px]">
-            {/* Large service card */}
-            <div className="col-span-12 md:col-span-6 row-span-3 bg-primary text-white brutalist-shadow-orange p-8 flex flex-col justify-between ripped-edge">
+            {/* Large service card - Warehouse */}
+            <div 
+              onClick={() => handleServiceClick(services[0])}
+              className="col-span-12 md:col-span-6 row-span-3 bg-primary text-white brutalist-shadow-orange p-8 flex flex-col justify-between ripped-edge cursor-pointer hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+            >
               <div>
                 <Icon name="Warehouse" size={64} className="mb-4" />
                 <h3 className="text-2xl font-black mb-4 leading-tight whitespace-pre-line">
@@ -175,7 +210,10 @@ export default function Index() {
             </div>
             
             {/* Medium cards */}
-            <div className="col-span-6 md:col-span-3 row-span-2 bg-secondary text-white brutalist-shadow p-6 flex flex-col justify-between">
+            <div 
+              onClick={() => handleServiceClick(services[1])}
+              className="col-span-6 md:col-span-3 row-span-2 bg-secondary text-white brutalist-shadow p-6 flex flex-col justify-between cursor-pointer hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+            >
               <Icon name="Package" size={48} className="mb-2 text-primary" />
               <div>
                 <h3 className="text-lg font-black mb-2">{services[1].title}</h3>
@@ -183,7 +221,10 @@ export default function Index() {
               </div>
             </div>
             
-            <div className="col-span-6 md:col-span-3 row-span-2 bg-white brutalist-border p-6 flex flex-col justify-between">
+            <div 
+              onClick={() => handleServiceClick(services[4])}
+              className="col-span-6 md:col-span-3 row-span-2 bg-white brutalist-border p-6 flex flex-col justify-between cursor-pointer hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+            >
               <Icon name="Monitor" size={48} className="mb-2 text-primary" />
               <div>
                 <h3 className="text-lg font-black mb-2 text-secondary">{services[4].title}</h3>
@@ -192,12 +233,18 @@ export default function Index() {
             </div>
             
             {/* Small cards */}
-            <div className="col-span-4 row-span-1 bg-muted brutalist-shadow p-4 flex items-center space-x-2">
+            <div 
+              onClick={() => handleServiceClick(services[2])}
+              className="col-span-4 row-span-1 bg-muted brutalist-shadow p-4 flex items-center space-x-2 cursor-pointer hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+            >
               <Icon name="GitBranch" size={32} className="text-secondary" />
               <h3 className="text-base font-black text-secondary">{services[2].title}</h3>
             </div>
             
-            <div className="col-span-8 row-span-1 bg-primary/10 brutalist-border p-4 flex items-center justify-between">
+            <div 
+              onClick={() => handleServiceClick(services[5])}
+              className="col-span-8 row-span-1 bg-primary/10 brutalist-border p-4 flex items-center justify-between cursor-pointer hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+            >
               <div>
                 <h3 className="text-base font-black text-secondary">{services[5].title}</h3>
                 <p className="text-xs text-muted-foreground">{services[5].description}</p>
@@ -206,7 +253,10 @@ export default function Index() {
             </div>
             
             {/* Large transport card */}
-            <div className="col-span-12 md:col-span-6 row-span-3 bg-accent brutalist-shadow p-8 flex flex-col justify-between relative overflow-hidden">
+            <div 
+              onClick={() => handleServiceClick(services[3])}
+              className="col-span-12 md:col-span-6 row-span-3 bg-accent brutalist-shadow p-8 flex flex-col justify-between relative overflow-hidden cursor-pointer hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+            >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 transform rotate-45 translate-x-16 -translate-y-16"></div>
               <div>
                 <Icon name="Truck" size={64} className="mb-4 text-secondary" />
@@ -216,25 +266,37 @@ export default function Index() {
               </div>
               <p className="text-lg text-muted-foreground relative z-10">{services[3].description}</p>
             </div>
-            
-            {/* Info block */}
-            <div className="col-span-12 md:col-span-6 row-span-1 bg-secondary text-white p-6 flex items-center justify-between">
-              <div>
-                <div className="text-2xl font-black text-primary">ЯНДЕКС.МАРКЕТ</div>
-                <div className="text-sm opacity-80">Официальный партнер</div>
-              </div>
-              <Icon name="Star" size={40} className="text-primary" />
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Geography - Brutal Map Style */}
+      {/* Partners Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-black text-secondary mb-4">
+              НАШИ ПАРТНЕРЫ
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {partners.map((partner, index) => (
+              <div key={index} className="bg-accent p-6 brutalist-shadow text-center">
+                <div className="text-4xl mb-4">{partner.logo}</div>
+                <h3 className="text-lg font-black text-secondary mb-2">{partner.name}</h3>
+                <p className="text-sm text-muted-foreground">{partner.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Geography with Map - Brutal Map Style */}
       <section className="py-20 bg-secondary text-white relative">
         <div className="absolute inset-0 noise-bg opacity-10"></div>
         
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
               <h2 className="text-5xl md:text-6xl font-black mb-8 leading-tight">
                 17 СКЛАДОВ
@@ -242,12 +304,12 @@ export default function Index() {
                 <span className="text-primary">ПО РОССИИ</span>
               </h2>
               
-              {/* Cities in brutal grid */}
-              <div className="grid grid-cols-3 gap-2 mb-8">
-                {cities.slice(0, 12).map((city, index) => (
+              {/* Cities in brutal grid - Fixed layout */}
+              <div className="grid grid-cols-3 gap-3 mb-8">
+                {cities.map((city, index) => (
                   <div 
                     key={index} 
-                    className={`p-3 text-xs font-bold ${
+                    className={`p-3 text-sm font-bold text-center ${
                       index % 3 === 0 ? 'bg-primary text-white' : 
                       index % 3 === 1 ? 'bg-white text-secondary' : 
                       'bg-accent text-secondary'
@@ -257,29 +319,23 @@ export default function Index() {
                   </div>
                 ))}
               </div>
-              
-              <div className="flex flex-wrap gap-2">
-                {cities.slice(12).map((city, index) => (
-                  <span key={index} className="px-3 py-1 bg-white/10 text-xs font-bold">
-                    {city}
-                  </span>
-                ))}
-              </div>
             </div>
             
+            {/* Map placeholder and info */}
             <div className="space-y-6">
-              {/* Brutal info cards */}
-              <div className="bg-primary p-8 brutalist-shadow-orange text-white">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-white flex items-center justify-center">
-                    <Icon name="MapPin" size={24} className="text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-black">ГЕОГРАФИЯ</h3>
+              {/* Map placeholder */}
+              <div className="bg-accent p-8 brutalist-shadow h-80 flex items-center justify-center relative overflow-hidden">
+                <div className="text-center text-secondary">
+                  <Icon name="Map" size={64} className="mx-auto mb-4" />
+                  <h3 className="text-2xl font-black mb-2">ИНТЕРАКТИВНАЯ КАРТА</h3>
+                  <p className="text-muted-foreground">Складские комплексы по всей России</p>
                 </div>
-                <p className="text-lg opacity-90">
-                  Стратегическое размещение складских комплексов 
-                  для быстрой доставки в любую точку России
-                </p>
+                {/* Map dots simulation */}
+                <div className="absolute top-6 left-8 w-3 h-3 bg-primary rounded-full"></div>
+                <div className="absolute top-12 right-12 w-3 h-3 bg-primary rounded-full"></div>
+                <div className="absolute bottom-16 left-12 w-3 h-3 bg-primary rounded-full"></div>
+                <div className="absolute bottom-8 right-16 w-3 h-3 bg-primary rounded-full"></div>
+                <div className="absolute top-20 left-1/2 w-3 h-3 bg-primary rounded-full"></div>
               </div>
               
               <div className="grid grid-cols-2 gap-6">
@@ -389,18 +445,34 @@ export default function Index() {
                   </div>
                 </div>
                 
-                <div>
-                  <label className="block text-sm font-black text-secondary mb-2">
-                    ТЕЛЕФОН *
-                  </label>
-                  <Input 
-                    required
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="border-4 border-secondary focus:border-primary rounded-none h-14 font-bold"
-                    placeholder="+7 (___) ___-__-__"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-black text-secondary mb-2">
+                      ТЕЛЕФОН *
+                    </label>
+                    <Input 
+                      required
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="border-4 border-secondary focus:border-primary rounded-none h-14 font-bold"
+                      placeholder="+7 (___) ___-__-__"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-black text-secondary mb-2">
+                      EMAIL *
+                    </label>
+                    <Input 
+                      required
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="border-4 border-secondary focus:border-primary rounded-none h-14 font-bold"
+                      placeholder="your@email.com"
+                    />
+                  </div>
                 </div>
                 
                 <div>
@@ -486,6 +558,121 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      {/* Modal Windows */}
+      {/* Calculator Modal */}
+      <Dialog open={calculatorOpen} onOpenChange={setCalculatorOpen}>
+        <DialogContent className="max-w-2xl brutalist-shadow">
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-black text-secondary">РАСЧЕТ СТОИМОСТИ</DialogTitle>
+          </DialogHeader>
+          <form className="space-y-6 mt-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">ТИП ТОВАРА</label>
+                <Input className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="Например: одежда" />
+              </div>
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">ОБЪЕМ, М³</label>
+                <Input className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="Например: 100" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">СРОК ХРАНЕНИЯ</label>
+                <Input className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="Например: 6 месяцев" />
+              </div>
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">ТЕЛЕФОН *</label>
+                <Input required className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="+7 (___) ___-__-__" />
+              </div>
+            </div>
+            <Button className="w-full bg-primary text-white font-black py-6 text-lg brutalist-shadow-orange rounded-none">
+              ПОЛУЧИТЬ РАСЧЕТ
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Partner Modal */}
+      <Dialog open={partnerOpen} onOpenChange={setPartnerOpen}>
+        <DialogContent className="max-w-2xl brutalist-shadow">
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-black text-secondary">СТАТЬ ПАРТНЕРОМ</DialogTitle>
+          </DialogHeader>
+          <form className="space-y-6 mt-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">КОМПАНИЯ *</label>
+                <Input required className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="Название компании" />
+              </div>
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">КОНТАКТНОЕ ЛИЦО *</label>
+                <Input required className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="ФИО" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">ТЕЛЕФОН *</label>
+                <Input required className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="+7 (___) ___-__-__" />
+              </div>
+              <div>
+                <label className="block text-sm font-black text-secondary mb-2">EMAIL *</label>
+                <Input required type="email" className="border-4 border-secondary rounded-none h-12 font-bold" placeholder="your@company.com" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-black text-secondary mb-2">НАПРАВЛЕНИЕ СОТРУДНИЧЕСТВА</label>
+              <Textarea className="border-4 border-secondary rounded-none min-h-[100px] font-bold" placeholder="Опишите ваше предложение..." />
+            </div>
+            <Button className="w-full bg-primary text-white font-black py-6 text-lg brutalist-shadow-orange rounded-none">
+              ОТПРАВИТЬ ЗАЯВКУ
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Service Modal */}
+      <Dialog open={serviceOpen} onOpenChange={setServiceOpen}>
+        <DialogContent className="max-w-3xl brutalist-shadow">
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-black text-secondary">{selectedService?.title}</DialogTitle>
+          </DialogHeader>
+          {selectedService && (
+            <div className="space-y-6 mt-6">
+              <div className="flex items-start space-x-6">
+                <div className="w-20 h-20 bg-primary flex items-center justify-center">
+                  <Icon name={selectedService.icon} size={40} className="text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-lg mb-6 leading-relaxed">{selectedService.fullDescription}</p>
+                  
+                  <h3 className="text-xl font-black text-secondary mb-4">ВКЛЮЧАЕТ В СЕБЯ:</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {selectedService.features.map((feature: string, index: number) => (
+                      <div key={index} className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-primary"></div>
+                        <span className="font-bold text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-accent p-6 brutalist-border">
+                <h3 className="text-lg font-black text-secondary mb-4">ПОЛУЧИТЬ ПОДРОБНУЮ КОНСУЛЬТАЦИЮ</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input placeholder="Ваше имя" className="border-2 border-secondary rounded-none h-12" />
+                  <Input placeholder="Телефон" className="border-2 border-secondary rounded-none h-12" />
+                </div>
+                <Button className="w-full mt-4 bg-primary text-white font-black py-4 brutalist-shadow-orange rounded-none">
+                  СВЯЗАТЬСЯ С НАМИ
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
